@@ -3,8 +3,8 @@
 * `生成dylib(Xcode平台)的工程，可以通过 CMakeLists.txt来实现`
 * 除了CMakeLists ,有时候要加上 toolchaiin，为了方便，还可以编写一个批文件（shell脚本）来run.
 * 这里的脚本和toochain在同一目录下（不一定要在同一目录下，脚本里的定义的路径来决定的）
-* []()
-* []()
+* [运行脚本](https://github.com/GalenDeng/IOS_Study/blob/master/Xcode/dylib%E5%BA%93%E7%9A%84%E7%94%9F%E6%88%90%E4%B8%8E%E8%B0%83%E7%94%A8/configture_ios)
+* [toolchain](https://github.com/GalenDeng/IOS_Study/blob/master/Xcode/dylib%E5%BA%93%E7%9A%84%E7%94%9F%E6%88%90%E4%B8%8E%E8%B0%83%E7%94%A8/toolchain_ios64.cmake)
 
 * `关键 command`
 ```
