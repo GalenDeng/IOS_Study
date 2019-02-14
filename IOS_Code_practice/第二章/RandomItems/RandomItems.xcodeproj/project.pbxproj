@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		849604B122150064002DCB5B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 849604B022150064002DCB5B /* main.m */; };
+		849604B922152FBF002DCB5B /* BNRItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 849604B822152FBF002DCB5B /* BNRItem.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,8 @@
 /* Begin PBXFileReference section */
 		849604AD22150064002DCB5B /* RandomItems */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RandomItems; sourceTree = BUILT_PRODUCTS_DIR; };
 		849604B022150064002DCB5B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		849604B722152FBF002DCB5B /* BNRItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BNRItem.h; sourceTree = "<group>"; };
+		849604B822152FBF002DCB5B /* BNRItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BNRItem.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,8 @@
 			isa = PBXGroup;
 			children = (
 				849604B022150064002DCB5B /* main.m */,
+				849604B722152FBF002DCB5B /* BNRItem.h */,
+				849604B822152FBF002DCB5B /* BNRItem.m */,
 			);
 			path = RandomItems;
 			sourceTree = "<group>";
@@ -120,6 +125,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				849604B122150064002DCB5B /* main.m in Sources */,
+				849604B922152FBF002DCB5B /* BNRItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,18 +238,22 @@
 		849604B522150064002DCB5B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X2WRJ5UC5T;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
 		849604B622150064002DCB5B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X2WRJ5UC5T;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};
