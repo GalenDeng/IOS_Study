@@ -21,3 +21,21 @@ Looper.prepare();
 Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_LONG).show();
 Looper.loop();
 ```
+
+## 1. 通过 adb调试程序
+* `应用场景` 
+```
+平板电脑已经和打印机通过usb连接了，此时我想在电脑上查看logcat,
+但是平板已经和打印机连接了，我要调试就要使用 network(网络)的方式进行adb的调试
+```
+* 平板上在开发者选项那里打开usb调试，adb调试，选择调试的app应用
+* 通过网口连接打印机和电脑，ping一下两者是否互通
+* 电脑进入终端，进入到android sdk的 platform-tools/目录下
+```
+* admindeMacBook-Pro:android-sdk-cli admin$ adb connect 192.168.7.10
+already connected to 192.168.7.10:5555
+
+即adb 通信成功
+```
+* 在android-studio中，run -> 选择该usb设备【BY IP TO select】
+* 即可调试 
