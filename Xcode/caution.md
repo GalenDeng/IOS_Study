@@ -56,3 +56,8 @@ Xcode左上角，点中项目名称-Edit Scheme，或是菜单栏-Product-Scheme
 
 当你这里设置Debug时，你build/Run后就是debug版本，相应的，修改成Release模式，出来的就是release版本，这里可以很方便切换
 ```
+* `Build Active Architecture Only`
+```
+* 设置为NO的时候，会编译支持的所有的版本
+* 一般debug的时候可以选择设置为yes，release的时候要改为no，以适应不同设备。
+```
