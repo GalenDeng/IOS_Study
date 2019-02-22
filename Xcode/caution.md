@@ -39,3 +39,20 @@ already connected to 192.168.7.10:5555
 ```
 * 在android-studio中，run -> 选择该usb设备【BY IP TO select】
 * 即可调试 
+
+## 2. 缩小动态库突击大小的方法
+* `理解`
+```
+iOS开发，在Xcode调试程序时，分为两种方式，Debug和Release，在Target的Setting中相信大家应该看到很多选项都分为Debug和Release，方便我们分别设置，满足调试和发布的不同需求。
+Release是发行版本,比Debug版本有一些优化，文件比Debug文件小 Debug是调试版本，Debug和Release调用两个不同的底层库。通俗点讲，我们开发者自己内部真机或模拟器调试时，使用Debug模式就好，等到想要发布时，也就是说需要大众客户使用时，需要build Release版本，具体区别如下：
+1、Debug是调试版本，包括的程序信息更多
+2、只有Debug版的程序才能设置断点、单步执行、使用TRACE/ASSERT等调试输出语句
+3、Release不包含任何调试信息，所以体积小、运行速度快
+```
+* `设置方法`
+```
+调试程序时，生成（Build）或运行Debug或是Release版本的方法？
+Xcode左上角，点中项目名称-Edit Scheme，或是菜单栏-Product-Scheme-Edit Scheme 
+
+当你这里设置Debug时，你build/Run后就是debug版本，相应的，修改成Release模式，出来的就是release版本，这里可以很方便切换
+```
