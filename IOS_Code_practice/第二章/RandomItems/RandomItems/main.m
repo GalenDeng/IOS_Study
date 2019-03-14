@@ -31,14 +31,26 @@ int main(int argc, const char * argv[]) {
             NSString *item = [items objectAtIndex:i];
             NSLog(@"%@",item);
         }*/
-        BNRItem *item = [[BNRItem alloc] init];
+       /* BNRItem *item = [[BNRItem alloc] init];
         //initlize
         item.itemName =  @"Red Sofa";
         [item setSerialNumber:@"A1B2C"];
         [item setValueInDollars:100];
         
-        NSLog(@"%@  %@ %@ %d",[item itemName],[item dateCreated],[item serialNumber],[item valueInDollars]);
+        NSLog(@"%@  %@ %@ %d",[item itemName],[item dateCreated],[item serialNumber],[item valueInDollars]);*/
         
+        BNRItem *item = [[BNRItem alloc] initWithItemName:@"Red Sofa" valueInDollars:100
+                                             serialNumber:@"A1B2C"];
+        NSLog(@"%@",item);
+        
+        BNRItem *itemWithName = [[BNRItem alloc] initWithItemName:@"Blue Sofa"];
+        NSLog(@"%@",itemWithName);
+        
+        BNRItem *itemWithNoName = [[BNRItem alloc] init];
+        NSLog(@"%@",itemWithNoName);
+        
+
+        NSLog(@"Setting items to nil ...");
         // 释放对象
         items = nil;
     }
