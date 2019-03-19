@@ -18,3 +18,9 @@
 
 * 注意，我们不能把  .h , .cpp , .h , .mm 文件生成静态链接库，因为在引用了该静态链接库的 .m 工程里，当我们编译的时候，link 会报错，因为我们需要包含 c++ 的头文件，而系统在该种配置情况下会报错(若把 .m 文件改成 .mm 就可以link成功，但这种方式耦合度太强，不符合我们的要求)，而若我们生成的是 .dylib 动态链接库，我们在引用这个库的.m工程里,在编译的时候可以直接使用这个动态库的函数功能(因为引用动态链接库的工程在编译的时候，不会再次把 .dylib 动态链接库进行link,而是直接使用)
 ```
+* `new understanding`
+```
+1. 当我们需要在objc 中嵌入 c++ code , c++ 的代码 分为 .h 、 .cpp 文件，然后在调用 c++ 的函数的 objc 文件中把文件的后缀 .m be replaced to .mm ,so the file can use the c++ func
+2. 当我们finish the first step and make it to a static lib(.a), and we are going to use the static lib to the other project, so the project may need to set a option : xcode -> 
+Build Settings -> Compiler Sources As to objective-C++ , or not, it may make some issues.
+```
