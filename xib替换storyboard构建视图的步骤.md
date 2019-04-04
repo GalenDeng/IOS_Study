@@ -1,5 +1,6 @@
 # xib替换storyboard构建视图的步骤 (2019/04/04)
 
+* [xib替换storyboard构建视图(https://blog.csdn.net/quanzheng92/article/details/41487063)
 * `具体步骤`
 ```
 * find xxx.plist -> delete Main storyboard File base name
