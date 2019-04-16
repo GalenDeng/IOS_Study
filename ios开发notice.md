@@ -499,11 +499,127 @@ int main(int argc, char * argv[]) {
 * UITableViewController 的指定初始化方法是： initWithStyle:  参数常量： UITableViewStylePlain or UITableViewStyleGrouped
 * 因为 UITableViewController有view方法，view方法会调用loadView方法，如果视图不存在，则loadView方法会创建并载入一个空的视图
 
-24. `MVC`
+24. `single单例与UITableView组合应用`
+* 所谓的单例，就是在不同的应用中都是使用同一个对象，若该该对象不存在，就创建一个对象出来
+```
+// .h 声明
++ (instancetype)sharedStore;
+
+// .m 文件的implement process [类方法] : set static 变量 -> judge -> return single object
++ (instancetype)sharedStore
+{
+    static BNRItemStore *sharedStore;
+
+    // Do I need to create a sharedStore?
+    if (!sharedStore) {
+        sharedStore = [[self alloc] initPrivate];
+    }
+
+    return sharedStore;
+}
+```
+* `UITableView 的实现`
+```
+@implementation BNRItemsViewController
+
+/************************************************************/
+// custom init method 
+
+- (instancetype)init
+{
+    // Call the superclass's designated initializer
+    self = [super initWithStyle:UITableViewStylePlain];
+    if (self) {
+        for (int i = 0; i < 5; i++) {
+            // 创建对象
+            [[BNRItemStore sharedStore] createItem];
+        }
+    }
+    NSLog(@"sizeof(NSInteger) = %@", @(sizeof(NSInteger)));
+    return self;
+}
+
+- (instancetype)initWithStyle:(UITableViewStyle)style
+{
+    return [self init];
+}
+
+/************************************************************/
+// 如果对象池中没有 UITableViewCell对象，应该初始化哪种类型的UITableViewCell对象
+// forCellReuseIdentifier : 用来识别是哪种类型
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    [self.tableView registerClass:[UITableViewCell class]
+           forCellReuseIdentifier:@"UITableViewCell"];
+}
+
+// 返回行数
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [[[BNRItemStore sharedStore] allItems] count] ;
+}
+
+// dequeueReusableCellWithIdentifier : 重用UITableViewCell对象，将创建的过程交由给系统管理
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Get a new or recycled cell
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"UITableViewCell" forIndexPath:indexPath];
+
+    // Set the text on the cell with the description of the item
+    // that is at the nth index of items, where n = row this cell
+    // will appear in on the tableview
+    NSArray *items = [[BNRItemStore sharedStore] allItems];
+    BNRItem *item = items[indexPath.row];
+
+    cell.textLabel.text = [item description] ;
+
+    return cell;
+}
+
+@end
+```
+```
+* UITableView对象默认只有一个表格段
+* 表视图所显示的每一行都是一个独立的视图，这些视图是 UITableViewCell 对象，用 UITableViewCell 对象填充表视图
+* UITableView的实现遵循 UITableViewDataSource 协议
+```
+
+25. `通过 @throw 提示信息 `
+```
+// 提示使用 [BNRItemStore sharedStore] 方法
+- (instancetype)init
+{
+    @throw [NSException exceptionWithName:@"Singleton"
+                                   reason:@"Use +[BNRItemStore sharedStore]"
+                                 userInfo:nil];
+    return nil;
+}
+```
+26. `重写 description 方法`
+```
+- (NSString *)description
+{
+    NSString *descriptionString =
+        [[NSString alloc] initWithFormat:@"%@ (%@): Worth $%d, recorded on %@",
+                            self.itemName,
+                            self.serialNumber,
+                            self.valueInDollars,
+                            self.dateCreated];
+    return descriptionString;
+}
+```
+
+27. `MVC`
 ```
 * 模型： 负责存储数据，与用户界面无关
 * 视图： 负责显示界面，与模型对象无关
 * 控制器： 负责确保视图对象和模型对象的数据保持一致
 ```
+28. `代码片段库添加方式`
+* 《iOS编程第四版》 P175 - P178
+
 
 
