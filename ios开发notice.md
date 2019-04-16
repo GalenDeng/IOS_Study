@@ -1,5 +1,7 @@
 # ios开发notice (2019/04/04)
 
+* [GitBook简明教程](http://www.chengweiyang.cn/gitbook/index.html)
+
 1. `Interfaces Builder连线规则`
 ```
 * A导致B发生change , so A 连线到 B
@@ -486,7 +488,22 @@ int main(int argc, char * argv[]) {
 3. 在应用启动运行循环并开始接收事件前，UIApplication对象会向其委托发送application:didFinishLaunchingWithOptions: 这个消息，使应用能有机会完成相应的初始化工作 -> 譬如：创建UIWindow对象和多个视图控制对象
 
 *  UIApplication 的作用是维护运行循环，一旦程序里有创建某个UIApplication对象，该对象的运行循环就一直循环，main()的执行也会因此阻塞
+```
+23. `UITableView 与 UIViewController`
+* ios界面使用某种列表控件：用户可以选中、删除、重排列表中的条目 -> 这些控件其实都是 UITableView对象 -> 显示一组对象
+* UITableView 只能显示一列数据
+* UITableViewController可以作为视图控制对象、数据源、委托对象
+* 凡是遵守UITableViewDelegate协议的对象，都可以成为UITableView对象的委托对象
+* 凡是遵守UITableViewDataSource协议的objective - c 对象，都可以成为UITableView对象的数据源（即dataSource属性所指向的对象）
+* NSString 的 NS = Next Step
+* UITableViewController 的指定初始化方法是： initWithStyle:  参数常量： UITableViewStylePlain or UITableViewStyleGrouped
+* 因为 UITableViewController有view方法，view方法会调用loadView方法，如果视图不存在，则loadView方法会创建并载入一个空的视图
 
+24. `MVC`
+```
+* 模型： 负责存储数据，与用户界面无关
+* 视图： 负责显示界面，与模型对象无关
+* 控制器： 负责确保视图对象和模型对象的数据保持一致
 ```
 
 
