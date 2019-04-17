@@ -498,6 +498,7 @@ int main(int argc, char * argv[]) {
 * NSString 的 NS = Next Step
 * UITableViewController 的指定初始化方法是： initWithStyle:  参数常量： UITableViewStylePlain or UITableViewStyleGrouped
 * 因为 UITableViewController有view方法，view方法会调用loadView方法，如果视图不存在，则loadView方法会创建并载入一个空的视图
+* UITableViewController对象会在创建UITableView对象后，为这个UITableView对象的dataSource 和 delegate赋值，并指向自己
 
 24. `single单例与UITableView组合应用`
 * 所谓的单例，就是在不同的应用中都是使用同一个对象，若该该对象不存在，就创建一个对象出来
@@ -621,5 +622,111 @@ int main(int argc, char * argv[]) {
 28. `代码片段库添加方式`
 * 《iOS编程第四版》 P175 - P178
 
+29. `编辑UITableView`
+* `1. 插座变量`
+```
+@interface ViewController ()
+
+// 类扩展
+// 因为 headView 指向XIB文件中的顶层对象，所以必须为强引用
+// 当插座变量指向顶层对象所拥有的对象（如顶层对象的子视图时，应使用弱引用
+@property (nonatomic,strong) IBOutlet UIView *headerView;
+
+@end
+```
+* `2. XIB`
+```
+* XIB : xml interface builder
+
+* XIB应用场景：
+1. 用XIB文件来创建某个视图控制器的视图
+2. 在XIB文件中随意创建多个视图并设置层级结构和布局，然后在运行应用时按需载入
+   * project 右键 -> add new -> empty -> create -> select File's owner,然后打开标识检视面板，将class文本框修改为 你想加载的该控制器的 XXXX CLASS   -> add UIView
+
+* NIB文件的查找与加载code 演示 ： 《iOS编程第四版》 P184
+```
+* `3. 新增行`
+```
+* 视图的责任是将模型对象中的数据呈现给用户，只更新视图而不更新模型对象就会发生数据不一致的错误
+```
+```
+- (IBAction)addNewItem:(id)sender {
+    // 创建新对象
+    BNRItem *newItem = [[BNRItemStore sharedStore] createItem];
+    
+    // 获取新对象在allItems 数组中的索引
+    NSInteger *lastRow = [[[BNRItemStore sharedStore] allItems ]  indexOfObject:newItem];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:lastRow
+                                                inSection:0];
+    // 将新行插入 UITableView对象
+    // 注意 @[indexPath]
+    [self.tableView insertRowsAtIndexPaths:@[indexPath]
+                          withRowAnimation:UITableViewRowAnimationTop];
+}
+```
+* `4. 删除行`
+```
+* UITableView对象在书暗处某一个表格行前，会先向数据源发送一条特定的消息，得到确认后才会有实际的操作
+```
+```
+* delete 步骤:
+1. 从UITableView对象删除指定的UITableViewCell对象
+2. 找到和需要删除的UITableViewCell对象对应的XXX对象，也将其从存储的数组中删除
+3. 先delete对象，后delete 表格行
+
+* NSMutableArray 的 两种删除方式对比:
+-- : removeObject:  : 该方法会枚举数组，向每一个对象发送 isEqual: 消息， isEqual: 的作用是判断当前对象和传入
+                      对象所包含的数据是否相等（返回 YES or  NO ）
+
+-- : removeObjectIdenticalTo: : 不会比较对象所包含的数据，只会比较指向对象的指针 ： 所以，该方法只会移除数组
+                          所保存的那些和传入对象指针完全相同的指针
+                          【 适用于UITableViewCell对象的xxx对象以后可能使用 isEqual: 来实现特殊的比较逻辑】
+```
+```
+example:
+
+// 删除对象
+- (void)removeItem:(BNRItem *)item {
+    [self.privateItems removeObjectIdenticalTo:item];
+}
 
 
+// delete operation (object and table's row)
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    // 如果UITableView对象请求确认的是删除操作...
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSArray *items = [[BNRItemStore sharedStore] allItems];
+        BNRItem *item = items[indexPath.row];
+        // delete object
+        [[BNRItemStore sharedStore] removeItem:item];
+        // 还要删除表格视图中的相应表格行（带动画效果）
+        [tableView deleteRowsAtIndexPaths:@[indexPath]
+                         withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+```
+* `4. 移动行`
+```
+// move location
+- (void)moveItemsAtIndexe:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex {
+    if (fromIndex == toIndex) {
+        return;
+    }
+    
+    // 得到要移动的对象的指针，以便稍后能将其插入新的位置
+    BNRItem *item = self.privateItems[fromIndex];
+    
+    // 将 item 从 allItems 数组中移除
+    [self.privateItems removeObjectAtIndex:fromIndex];
+    
+    // 根据新的索引位置，将item 插回 allItems 数组中
+    [self.privateItems insertObject:item
+                            atIndex:toIndex];
+}
+
+//move location
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    [[BNRItemStore sharedStore] moveItemsAtIndexe:sourceIndexPath.row
+                                          toIndex:destinationIndexPath.row];
+}
+```
