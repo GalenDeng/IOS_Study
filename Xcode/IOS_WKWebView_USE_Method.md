@@ -1,5 +1,8 @@
 # The use method of WKWebView
 
+* [Failed to instantiate the default view controller for UIMainStoryboardFile 'Main'](https://blog.csdn.net/csdn_hhg/article/details/51182370)
+* [WKWebView 点击链接无反应](https://blog.csdn.net/akaier/article/details/51397959)
+
 1. `WKWebView 与 WebView 对比`
 ```
 * WKWebView相比UIWebView消耗的内存更少
@@ -58,3 +61,30 @@
 	</dict>
 ```
 * [iOS访问http请求不成功的解决方法](https://blog.csdn.net/liuyinghui523/article/details/79376755)
+
+4. `添加WebView的backward and forward method`
+```
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    
+    // create WKWebView
+    [self createWebView];
+    
+    // backward and forward function implementation
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"后退" style:UIBarButtonItemStyleDone target:self action:@selector(goback)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"前进" style:UIBarButtonItemStyleDone target:self action:@selector(gofarward)];
+}
+
+-(void)goback{
+    if ([self.webView canGoBack]) {
+        [self.webView goBack];
+        NSLog(@"back");
+    }
+}
+-(void)gofarward {
+    if ([self.webView canGoForward]) {
+        [self.webView goForward];
+    }
+}
+```
