@@ -27,9 +27,36 @@ cd 到Products目录下，
 输入合并语句(注意空格)
 lipo -create XXX/Products/Debug-iphonesimulator/libTestA.a XXX/Products/Debug-iphoneos/libTestA.a -output libTestA.a
 
-注意事项：1、framework 在某些情况下出现error，此时需要在该工程中 other linker flags添加两个参数 -ObjC -all_load。（未测试，等碰到问题再补充）
+注意事项：1、framework 在某些情况下出现error，此时需要在该工程中 other linker flags添加两个参数 -ObjC -all_load （未测试，等碰到问题再补充）
 ```
 3. `.a staticlib create`
 ```
 创建工程时，选择Cocoa Touch Static Library,其余步骤与创建.framework类似
+```
+
+4. `真机和模拟器的CPU架构区别`
+```
+* 真机的架构为 : armv7 armv7s arm64 arm64e
+* 模拟器的架构 : i386 x86_64
+* 所以生成不同平台下的framework的时候, Architectures 和 Valid Architectures   要相应修改 
+* 我们可以通过 lipo -info  xxx.framework/xxx  来查看该 framework 支持哪些架  
+  构的CPU
+```
+
+5. `framework中需要的资源通过bundle的方式打包 - 导入主工程使用`
+```
+* 有时候framework中需要使用某些资源，但是我们在framework中使用 [NSBundle    mainBundle] 得到的是主工程的Bundle，而不会得到 framework 中的 Bundle,所以，
+我们需要把framework需要使用到的资源，通过bundle的方式打包，放置在主工程的 Copy Bundle Resources,来使用
+
+* framework中使用Bundle的具体方式:
+  NSString *pathString1=[[NSBundle mainBundle]pathForResource:@"bundleName" ofType:@"bundle"];
+  NSBundle *resourceBundle=[NSBundle bundleWithPath:pathString1];
+  NSString *pathString=[resourceBundle pathForResource:@"plistName" ofType:@"plist"];
+  NSDictionary *sources=[[NSDictionary alloc]initWithContentsOfFile:pathString];
+```
+
+6. `framework的使用方式`
+```
+* 主工程中包含这个 xxx.framework 
+* build Settings -> Link Binary With Libraries -> add this xxx.framework
 ```
