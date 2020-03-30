@@ -2,6 +2,8 @@
 
 * [使用cocoapods导入第三方后 报错_OBJC_CLASS_$_XXX](https://www.jianshu.com/p/ed1bc90402f0)
 * [使用Cocoapods中跳过pod setup以及pod update和pod install超级慢的解决方法](https://www.jianshu.com/p/e93293d91459?open_source=weibo_search)
+* [libPods的问题](https://www.jianshu.com/p/3cffc36212eb)
+* [pods的原理](https://blog.csdn.net/Philm_iOS/article/details/81200697)
 
 * `first`
 pod repo remove master
